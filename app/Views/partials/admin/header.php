@@ -2,9 +2,17 @@
 
     <div class="container-fluid">
 
-        <span class="navbar-brand fw-bold">
-            <i class="bi bi-mortarboard-fill me-2"></i>
-            StudentHub Admin
+        <span class="navbar-brand fw-bold d-flex align-items-center gap-2">
+
+            <i class="bi bi-mortarboard-fill"></i>
+
+            <a href="<?= base_url('/') ?>"
+            class="text-white text-decoration-none">
+
+                StudentHub Admin
+
+            </a>
+
         </span>
 
         <div class="ms-auto d-flex align-items-center gap-3">

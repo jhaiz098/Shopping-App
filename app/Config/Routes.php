@@ -18,5 +18,10 @@ $routes->get('/logout', 'Auth::logout');
 
 $routes->group('admin', ['filter' => 'admin'], function($routes)
 {
-    $routes->get('/', 'Admin::dashboard');
+    $routes->get('/', 'Admin\Admin::dashboard');
+
+    $routes->get('categories', 'Admin\Admin::categories');
+    $routes->post('categories/add', 'Admin\Categories::add_category');
+    $routes->post('categories/update/(:num)', 'Admin\Categories::update_category/$1');
+    $routes->get('categories/delete/(:num)', 'Admin\Categories::delete_category/$1');
 });
