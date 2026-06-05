@@ -13,3 +13,10 @@ $routes->get('/login', 'Auth::login');
 $routes->post('/login/auth', 'Auth::loginAuth');
 
 $routes->get('/logout', 'Auth::logout');
+
+
+
+$routes->group('admin', ['filter' => 'admin'], function($routes)
+{
+    $routes->get('/', 'Admin::dashboard');
+});

@@ -4,24 +4,20 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class UserModel extends Model
+class CategoryModel extends Model
 {
-    protected $table = 'users';
+    protected $table = 'categories';
     protected $primaryKey = 'id';
     protected $returnType = 'array';
 
     protected $allowedFields = [
-        'first_name',
-        'last_name',
-        'email',
-        'password',
-        'role',
+        'name',
+        'description',
     ];
 
-    protected $useTimestamps = true;
+    protected $useTimestamps = false;
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
-    
 }
 
 ?>
