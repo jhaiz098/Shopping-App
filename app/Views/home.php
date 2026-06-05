@@ -92,56 +92,81 @@
 
         <div class="d-flex align-items-center gap-2">
 
-            <a href="/login" class="btn btn-outline-primary">
-                <i class="bi bi-box-arrow-in-right me-1"></i>
-                Sign In
-            </a>
+            <?php if(session()->get('isLoggedIn')): ?>
 
-            <a href="/register" class="btn btn-primary">
-                <i class="bi bi-person-plus-fill me-1"></i>
-                Sign Up
-            </a>
+                <div class="dropdown">
 
-            <!-- <div class="dropdown">
-
-                <button class="btn btn-outline-primary dropdown-toggle"
+                    <button
+                        class="btn btn-outline-primary dropdown-toggle"
+                        type="button"
                         data-bs-toggle="dropdown">
 
-                    <i class="bi bi-person-circle me-1"></i>
-                    John Doe
+                        <i class="bi bi-person-circle me-1"></i>
 
-                </button>
+                        <?= esc(session()->get('first_name')) ?>
+                        <?= esc(session()->get('last_name')) ?>
 
-                <ul class="dropdown-menu dropdown-menu-end">
+                    </button>
 
-                    <li>
-                        <a class="dropdown-item" href="#">
-                            <i class="bi bi-person me-2"></i>
-                            Profile
-                        </a>
-                    </li>
+                    <ul class="dropdown-menu dropdown-menu-end">
 
-                    <li>
-                        <a class="dropdown-item" href="#">
-                            <i class="bi bi-bag me-2"></i>
-                            My Orders
-                        </a>
-                    </li>
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <i class="bi bi-person me-2"></i>
+                                Profile
+                            </a>
+                        </li>
 
-                    <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <i class="bi bi-bag me-2"></i>
+                                My Orders
+                            </a>
+                        </li>
 
-                    <li>
-                        <a class="dropdown-item text-danger" href="#">
-                            <i class="bi bi-box-arrow-right me-2"></i>
-                            Logout
-                        </a>
-                    </li>
+                        <?php if(session()->get('role') === 'admin'): ?>
 
-                </ul>
+                            <li>
+                                <a class="dropdown-item" href="<?= base_url('admin') ?>">
+                                    <i class="bi bi-speedometer2 me-2"></i>
+                                    Dashboard
+                                </a>
+                            </li>
 
-            </div> -->
+                        <?php endif; ?>
 
-            <a href="/cart" class="btn btn-outline-dark position-relative">
+                        <li><hr class="dropdown-divider"></li>
+
+                        <li>
+                            <a
+                                class="dropdown-item text-danger"
+                                href="<?= base_url('logout') ?>">
+
+                                <i class="bi bi-box-arrow-right me-2"></i>
+                                Logout
+
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            <?php else: ?>
+
+                <a href="<?= base_url('login') ?>" class="btn btn-outline-primary">
+                    <i class="bi bi-box-arrow-in-right me-1"></i>
+                    Sign In
+                </a>
+
+                <a href="<?= base_url('register') ?>" class="btn btn-primary">
+                    <i class="bi bi-person-plus-fill me-1"></i>
+                    Sign Up
+                </a>
+
+            <?php endif; ?>
+
+            <a href="<?= base_url('cart') ?>" class="btn btn-outline-dark position-relative">
 
                 <i class="bi bi-cart3"></i>
 

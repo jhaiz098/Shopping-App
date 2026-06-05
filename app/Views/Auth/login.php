@@ -52,14 +52,14 @@
 
 <body>
 
-<div class="container">
+<div class="container p-3">
 
     <div class="card login-card shadow-lg mx-auto">
 
         <div class="card-body p-5">
 
             <!-- BACK TO HOME (modern button style) -->
-            <a href="/" class="back-home mb-4">
+            <a href="<?= base_url() ?>" class="back-home mb-4">
                 <i class="bi bi-house-door-fill"></i>
                 Back to Home
             </a>
@@ -76,7 +76,54 @@
 
             </div>
 
-            <form action="/login" method="POST">
+            <?php if(session()->getFlashdata('errors')): ?>
+
+                <div class="alert alert-danger alert-dismissible fade show">
+
+                    <strong>
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        Please fix the following errors:
+                    </strong>
+
+                    <ul class="mb-0 mt-2">
+
+                        <?php foreach(session()->getFlashdata('errors') as $error): ?>
+
+                            <li><?= esc($error) ?></li>
+
+                        <?php endforeach; ?>
+
+                    </ul>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert">
+                    </button>
+
+                </div>
+
+            <?php endif; ?>
+
+            <?php if(session()->getFlashdata('success')): ?>
+
+                <div class="alert alert-success alert-dismissible fade show"> 
+
+                    <i class="bi bi-check-circle-fill me-2"></i>
+
+                    <?= session()->getFlashdata('success') ?>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert">
+                    </button>
+
+                </div>
+
+            <?php endif; ?>
+
+            <form action="<?= base_url('login/auth') ?>" method="POST">
 
                 <div class="mb-3">
 
@@ -118,5 +165,6 @@
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
