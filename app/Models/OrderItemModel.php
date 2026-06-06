@@ -13,8 +13,11 @@ class OrderItemModel extends Model
     protected $allowedFields = [
         'order_id',
         'product_id',
+        'name',
         'quantity',
         'price',
+        'subtotal',
+        'image',
     ];
 
     protected $useTimestamps = true;

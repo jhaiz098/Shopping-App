@@ -179,16 +179,6 @@ class Products extends BaseController
                 ->with('error', 'Product not found.');
         }
 
-        if (!empty($product['image']))
-        {
-            $imagePath = FCPATH . 'uploads/products/' . $product['image'];
-
-            if (file_exists($imagePath))
-            {
-                unlink($imagePath);
-            }
-        }
-
         $productModel->delete($id);
 
         return redirect()->to('admin/products')

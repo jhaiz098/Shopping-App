@@ -39,6 +39,11 @@ class Orders extends BaseController
             ->orderBy('id', 'DESC')
             ->paginate($perPage);
 
+        foreach ($data['orders'] as $key => &$order)
+        {
+            $data['orders'][$key]['order_code'] = 'ORD-' . str_pad($order['id'], 6, '0', STR_PAD_LEFT);
+        }
+
         $data['pager'] = $orderModel->pager;
 
         return view('my_orders', $data);
@@ -54,6 +59,8 @@ class Orders extends BaseController
             ->where('orders.id', $id)
             ->first();
 
+        $order_code = 'ORD-' . str_pad($order['id'], 6, '0', STR_PAD_LEFT);
+
         if (!$order)
         {
             return redirect()->to('orders/my')
@@ -63,15 +70,15 @@ class Orders extends BaseController
         $orderItemModel = new OrderItemModel();
 
         $items = $orderItemModel
-            ->select('order_items.*, products.name, products.price, products.image')
-            ->join('products', 'products.id = order_items.product_id')
+            ->select('order_items.*')
             ->where('order_items.order_id', $id)
             ->findAll();
 
         return view('orders_view', [
             'order' => $order,
             'items' => $items,
-            'cartCount' => $this->getCartCount()
+            'cartCount' => $this->getCartCount(),
+            'order_code' => $order_code
         ]);
     }
 }

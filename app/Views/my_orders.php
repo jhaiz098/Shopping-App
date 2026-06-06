@@ -30,7 +30,7 @@ My Orders
                     <thead class="table-light">
                         <tr>
                             <th>#</th>
-                            <th>Order ID</th>
+                            <th>Order Code</th>
                             <th>Date</th>
                             <th>Total</th>
                             <th>Status</th>
@@ -40,14 +40,20 @@ My Orders
 
                     <tbody>
 
+                        <?php
+                        $perPage = 10;
+                        $currentPage = $pager->getCurrentPage();
+                        $number = 1 + (($currentPage - 1) * $perPage);
+                        ?>
+
                         <?php foreach($orders as $order): ?>
 
                             <tr>
 
-                                <td><?= $order['id'] ?></td>
+                                <td><?= $number ?></td>
 
-                                <td>
-                                    <strong>#<?= $order['id'] ?></strong>
+                                <td class="fw-bold">
+                                    <?= $order['order_code'] ?>
                                 </td>
 
                                 <td>

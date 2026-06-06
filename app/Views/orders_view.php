@@ -14,7 +14,7 @@ Order Details
         <div>
 
             <h3 class="mb-0">
-                Order #<?= $order['id'] ?>
+                Order Code: <?= $order_code ?>
             </h3>
 
             <small class="text-muted">
@@ -54,6 +54,7 @@ Order Details
 
                         <thead class="table-light">
                             <tr>
+                                <th>#</th>
                                 <th>Product</th>
                                 <th width="120">Price</th>
                                 <th width="80">Qty</th>
@@ -63,7 +64,7 @@ Order Details
 
                         <tbody>
 
-                            <?php $total = 0; ?>
+                            <?php $total = 0; $i = 1;?>
 
                             <?php foreach($items as $item): ?>
 
@@ -73,6 +74,10 @@ Order Details
                                 ?>
 
                                 <tr>
+
+                                    <td>
+                                        <?= $i++ ?>
+                                    </td>
 
                                     <td>
 

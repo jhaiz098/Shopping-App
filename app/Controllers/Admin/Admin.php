@@ -82,8 +82,7 @@ class Admin extends BaseController
         foreach ($orders as &$order)
         {
             $order['items'] = $orderItemModel
-                ->select('order_items.*, products.name, products.image, products.price')
-                ->join('products', 'products.id = order_items.product_id')
+                ->select('order_items.*')
                 ->where('order_items.order_id', $order['id'])
                 ->findAll();
 

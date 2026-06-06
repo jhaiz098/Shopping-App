@@ -256,8 +256,11 @@ class Cart extends BaseController
             $orderItemModel->insert([
                 'order_id' => $orderId,
                 'product_id' => $item['product_id'],
+                'name' => $product['name'],
                 'quantity' => $item['quantity'],
-                'price' => $product['price']
+                'price' => $product['price'],
+                'image' => $product['image'],
+                'subtotal'   => $product['price'] * $item['quantity']
             ]);
 
             // reduce stock

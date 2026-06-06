@@ -5,6 +5,7 @@ namespace App\Controllers\Admin;
 use App\Models\CategoryModel;
 use Config\Services;
 use App\Controllers\BaseController;
+use App\Models\ProductModel;
 
 class Categories extends BaseController
 {
@@ -83,12 +84,26 @@ class Categories extends BaseController
     public function delete_category($id)
     {
         $categoryModel = new CategoryModel();
+        $productModel = new ProductModel();
 
         $category = $categoryModel->find($id);
 
         if (!$category) {
             return redirect()->to('admin/categories')
                 ->with('error', 'Category not found.');
+        }
+
+        $hasProducts = $productModel
+            ->where('category_id', $id)
+            ->countAllResults();
+
+        if ($hasProducts > 0)
+        {
+            return redirect()->back()
+                ->with(
+                    'error',
+                    'Cannot delete category because products are assigned to it.'
+                );
         }
 
         $categoryModel->delete($id);
