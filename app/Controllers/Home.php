@@ -6,6 +6,7 @@ use App\Models\CategoryModel;
 use App\Models\ProductModel;
 use App\Models\CartModel;
 use App\Models\OrderModel;
+use App\Models\UserModel;
 
 class Home extends BaseController
 {
@@ -31,15 +32,22 @@ class Home extends BaseController
         $data['cartMap'] = $cartMap;
 
         $data['cartCount'] = $this->getCartCount();
-        
+
         $featuredLimit = 4;
 
         $data['products'] = $productModel
             ->select('products.*, categories.name as category_name')
             ->join('categories', 'categories.id = products.category_id')
+            ->where('products.stock >', 0)
             ->orderBy('products.id', 'DESC')
             ->limit($featuredLimit)
             ->findAll();
+
+        foreach ($data['products'] as &$product)
+        {
+            $product['product_code'] =
+                'PRD-' . str_pad($product['id'], 6, '0', STR_PAD_LEFT);
+        }
 
         $data['categories'] = $categoryModel->findAll();
 
@@ -51,38 +59,45 @@ class Home extends BaseController
         $keyword = trim($this->request->getGet('keyword'));
 
         $productModel = new ProductModel();
-        $cartModel    = new CartModel();
+        $cartModel = new CartModel();
 
         $userId = session()->get('user_id');
 
-        // CART MAP (for showing quantities in UI)
         $cartItems = $cartModel
             ->where('user_id', $userId)
             ->findAll();
 
         $cartMap = [];
 
-        foreach ($cartItems as $item) {
+        foreach ($cartItems as $item)
+        {
             $cartMap[$item['product_id']] = $item['quantity'];
         }
 
         $perPage = 8;
 
-        $builder = $productModel
+        $products = $productModel
             ->select('products.*, categories.name as category_name')
             ->join('categories', 'categories.id = products.category_id', 'left')
             ->groupStart()
                 ->like('products.name', $keyword)
                 ->orLike('products.description', $keyword)
             ->groupEnd()
-            ->orderBy('products.id', 'DESC');
+            ->orderBy('products.id', 'DESC')
+            ->paginate($perPage);
+
+        foreach ($products as &$product)
+        {
+            $product['product_code'] =
+                'PRD-' . str_pad($product['id'], 6, '0', STR_PAD_LEFT);
+        }
 
         $data = [
-            'cartMap'  => $cartMap,
-            'cartCount'=> $this->getCartCount(),
-            'keyword'  => $keyword,
-            'products' => $builder->paginate($perPage),
-            'pager'    => $productModel->pager
+            'cartMap'   => $cartMap,
+            'cartCount' => $this->getCartCount(),
+            'keyword'   => $keyword,
+            'products'  => $products,
+            'pager'     => $productModel->pager
         ];
 
         return view('search_results', $data);
@@ -142,5 +157,44 @@ class Home extends BaseController
             ->findAll();
 
         return view('my_orders', $data);
+    }
+
+    public function profile()
+    {
+        if (!session()->get('isLoggedIn'))
+        {
+            return redirect()->to('/login');
+        }
+
+        $userModel = new UserModel();
+
+        $data['user'] = $userModel->find(
+            session()->get('user_id')
+        );
+
+        $data['cartCount'] = $this->getCartCount();
+
+        return view('profile', $data);
+    }
+
+    public function update_profile()
+    {
+        $userModel = new UserModel();
+
+        $userId = session()->get('user_id');
+
+        $userModel->update($userId, [
+            'first_name' => $this->request->getPost('first_name'),
+            'last_name'  => $this->request->getPost('last_name'),
+            'email'      => $this->request->getPost('email')
+        ]);
+
+        session()->set([
+            'first_name' => $this->request->getPost('first_name'),
+            'last_name'  => $this->request->getPost('last_name')
+        ]);
+
+        return redirect()->back()
+            ->with('success', 'Profile updated successfully.');
     }
 }

@@ -61,10 +61,14 @@
                             <span class="badge bg-secondary mb-2">
                                 <?= esc($product['category_name'] ?? 'Uncategorized') ?>
                             </span>
+                            
+                            <p class="text-muted small mb-1">
+                                <span class="fw-bold">Product Code:</span> <?= esc($product['product_code']) ?>
+                            </p>
 
                             <!-- PRODUCT NAME -->
-                            <h4 class="fw-bold mb-1">
-                                <?= esc($product['name']) ?>
+                            <h4 class="mb-1">
+                                <span class="fw-bold">Name:</span> <?= esc($product['name']) ?>
                             </h4>
 
                             <!-- PRICE -->

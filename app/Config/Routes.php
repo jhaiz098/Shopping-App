@@ -8,6 +8,9 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 $routes->get('search', 'Home::search');
 
+$routes->get('profile', 'Home::profile');
+$routes->post('profile/update', 'Home::update_profile');
+
 $routes->get('cart', 'Home::cart');
 $routes->post('cart/add/(:num)', 'Cart::add_to_cart/$1');
 $routes->post('cart/update/(:num)', 'Cart::update_cart/$1');
@@ -43,6 +46,7 @@ $routes->group('admin', ['filter' => 'admin'], function($routes)
     $routes->get('products/delete/(:num)', 'Admin\Products::delete_product/$1');
 
     $routes->get('orders', 'Admin\Admin::orders');
+    $routes->post('orders/update/(:num)', 'Admin\Orders::update_order/$1');
 
     $routes->get('users', 'Admin\Admin::users');
     $routes->post('users/add', 'Admin\Users::add_user');

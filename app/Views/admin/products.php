@@ -109,6 +109,7 @@ Products
 
                 <tr>
                     <th width="70">#</th>
+                    <th>Product Code</th>
                     <th width="100">Image</th>
                     <th>Product</th>
                     <th>Category</th>
@@ -148,6 +149,10 @@ Products
 
                         <td>
                             <?= $number++ ?>
+                        </td>
+
+                        <td>
+                            <span class="fw-bold"><?= $product['product_code'] ?></span>
                         </td>
 
                         <td>

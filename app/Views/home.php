@@ -106,9 +106,14 @@ Homepage
                                 <?= esc($product['category_name'] ?? 'Uncategorized') ?>
                             </span>
 
+                            <!-- PRODUCT CODE -->
+                            <p class="text-muted small mb-1">
+                                <span class="fw-bold">Product Code:</span> <?= esc($product['product_code']) ?>
+                            </p>
+
                             <!-- PRODUCT NAME -->
                             <h5 class="mb-1">
-                                <?= esc($product['name']) ?>
+                                <span class="fw-bold">Name:</span><?= esc($product['name']) ?>
                             </h5>
 
                             <!-- STOCK -->
@@ -137,6 +142,8 @@ Homepage
                                 ₱<?= number_format($product['price'], 2) ?>
                             </p>
 
+                            
+                            <?php if(session()->get('role') !== 'admin'): ?>
                             <!-- BUTTON -->
                             <button
                                 class="btn btn-primary w-100 mt-auto"
@@ -148,6 +155,7 @@ Homepage
                                 Add to Cart
 
                             </button>
+                            <?php endif; ?>
 
                         </div>
 

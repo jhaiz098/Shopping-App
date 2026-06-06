@@ -53,6 +53,12 @@ class Admin extends BaseController
             ->orderBy('products.id', 'DESC')
             ->paginate(10);
 
+        foreach($data['products'] as $key => $product)
+        {
+            $productCode = 'PRD-' . str_pad($product['id'], 6, '0', STR_PAD_LEFT);
+            $data['products'][$key]['product_code'] = $productCode;
+        }
+
         $data['pager'] = $productModel->pager;
 
         $data['categories'] = $categoryModel
@@ -73,13 +79,22 @@ class Admin extends BaseController
             ->orderBy('orders.order_date', 'DESC')
             ->paginate(10);
 
-        foreach ($orders as &$order) {
-
+        foreach ($orders as &$order)
+        {
             $order['items'] = $orderItemModel
                 ->select('order_items.*, products.name, products.image, products.price')
                 ->join('products', 'products.id = order_items.product_id')
                 ->where('order_items.order_id', $order['id'])
                 ->findAll();
+
+            foreach ($order['items'] as $itemKey => $item)
+            {
+                $order['items'][$itemKey]['product_code'] =
+                    'PRD-' . str_pad($item['product_id'], 6, '0', STR_PAD_LEFT);
+            }
+
+            $order['order_code'] =
+                'ORD-' . str_pad($order['id'], 6, '0', STR_PAD_LEFT);
         }
 
         $data['orders'] = $orders;

@@ -15,6 +15,21 @@ Orders
 
 </div>
 
+<?php if(session()->getFlashdata('error')): ?>
+
+    <div class="alert alert-danger alert-dismissible fade show">
+
+        <?= session()->getFlashdata('error') ?>
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert">
+        </button>
+
+    </div>
+
+<?php endif; ?>
+
 <?php if(session()->getFlashdata('success')): ?>
 
     <div class="alert alert-success alert-dismissible fade show">
@@ -49,7 +64,7 @@ Orders
 
                 <tr>
                     <th width="70">#</th>
-                    <th>Order ID</th>
+                    <th>Order Code</th>
                     <th>Customer</th>
                     <th>Date</th>
                     <th>Total</th>
@@ -84,7 +99,7 @@ Orders
                         <td><?= $number++ ?></td>
 
                         <td>
-                            <span class="fw-bold">#<?= $order['id'] ?></span>
+                            <span class="fw-bold"><?= $order['order_code'] ?></span>
                         </td>
 
                         <td>
@@ -105,18 +120,44 @@ Orders
                         <td>
 
                             <?php
-                                $badge = match($order['status']) {
-                                    'Pending' => 'warning',
-                                    'Processing' => 'info',
-                                    'Completed' => 'success',
-                                    'Cancelled' => 'danger',
-                                    default => 'secondary'
-                                };
-                            ?>
+                            switch (strtolower($order['status']))
+                            {
+                                case 'pending':
+                                    echo '<span class="badge bg-warning text-dark">
+                                            <i class="bi bi-hourglass-split me-1"></i>Pending
+                                        </span>';
+                                    break;
 
-                            <span class="badge bg-<?= $badge ?>">
-                                <?= $order['status'] ?>
-                            </span>
+                                case 'processing':
+                                    echo '<span class="badge bg-info text-dark">
+                                            <i class="bi bi-gear-fill me-1"></i>Processing
+                                        </span>';
+                                    break;
+
+                                case 'shipped':
+                                    echo '<span class="badge bg-primary">
+                                            <i class="bi bi-truck me-1"></i>Shipped
+                                        </span>';
+                                    break;
+
+                                case 'delivered':
+                                    echo '<span class="badge bg-success">
+                                            <i class="bi bi-check-circle-fill me-1"></i>Delivered
+                                        </span>';
+                                    break;
+
+                                case 'cancelled':
+                                    echo '<span class="badge bg-danger">
+                                            <i class="bi bi-x-circle-fill me-1"></i>Cancelled
+                                        </span>';
+                                    break;
+
+                                default:
+                                    echo '<span class="badge bg-secondary">'
+                                        . esc($order['status']) .
+                                        '</span>';
+                            }
+                            ?>
 
                         </td>
 
@@ -193,21 +234,46 @@ Orders
                             </p>
 
                             <p class="mb-0">
-                                <strong>Status:</strong>
 
                                 <?php
-                                $badge = match($order['status']) {
-                                    'Pending' => 'warning',
-                                    'Processing' => 'info',
-                                    'Completed' => 'success',
-                                    'Cancelled' => 'danger',
-                                    default => 'secondary'
+                                $status = strtolower($order['status']);
+
+                                $statusConfig = match($status) {
+                                    'pending' => [
+                                        'class' => 'bg-warning text-dark',
+                                        'icon'  => 'bi-hourglass-split'
+                                    ],
+                                    'processing' => [
+                                        'class' => 'bg-info text-dark',
+                                        'icon'  => 'bi-gear'
+                                    ],
+                                    'shipped' => [
+                                        'class' => 'bg-primary',
+                                        'icon'  => 'bi-truck'
+                                    ],
+                                    'delivered' => [
+                                        'class' => 'bg-success',
+                                        'icon'  => 'bi-check-circle'
+                                    ],
+                                    'cancelled' => [
+                                        'class' => 'bg-danger',
+                                        'icon'  => 'bi-x-circle'
+                                    ],
+                                    default => [
+                                        'class' => 'bg-secondary',
+                                        'icon'  => 'bi-question-circle'
+                                    ]
                                 };
                                 ?>
 
-                                <span class="badge bg-<?= $badge ?>">
-                                    <?= $order['status'] ?>
-                                </span>
+                                <p class="mb-0">
+                                    <strong>Status:</strong>
+
+                                    <span class="badge <?= $statusConfig['class'] ?>">
+                                        <i class="bi <?= $statusConfig['icon'] ?> me-1"></i>
+                                        <?= ucfirst($order['status']) ?>
+                                    </span>
+                                </p>
 
                             </p>
 
@@ -235,16 +301,18 @@ Orders
 
                                     <thead class="table-light">
                                         <tr>
+                                            <th>#</th>
+                                            <th>Product Code</th>
                                             <th>Product</th>
-                                            <th width="100">Price</th>
-                                            <th width="60">Qty</th>
-                                            <th width="120">Subtotal</th>
+                                            <th>Price</th>
+                                            <th>Qty</th>
+                                            <th>Subtotal</th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
 
-                                        <?php $grand = 0; ?>
+                                        <?php $grand = 0; $i = 1;?>
 
                                         <?php foreach($order['items'] as $item): ?>
 
@@ -252,6 +320,14 @@ Orders
                                             <?php $grand += $subtotal; ?>
 
                                             <tr>
+                                                <td>
+                                                    <?= $i++ ?>
+                                                </td>
+
+                                                <td class="fw-bold">
+                                                    <?= $item['product_code'] ?>
+                                                </td>
+
 
                                                 <td>
                                                     <div class="d-flex align-items-center">
@@ -290,7 +366,7 @@ Orders
 
                                     <tfoot>
                                         <tr class="table-light">
-                                            <th colspan="3" class="text-end">Total</th>
+                                            <th colspan="5" class="text-end">Total</th>
                                             <th>₱<?= number_format($grand, 2) ?></th>
                                         </tr>
                                     </tfoot>
@@ -340,10 +416,11 @@ Orders
 
                             <select name="status" class="form-select">
 
-                                <option value="Pending" <?= $order['status']=='Pending'?'selected':'' ?>>Pending</option>
-                                <option value="Processing" <?= $order['status']=='Processing'?'selected':'' ?>>Processing</option>
-                                <option value="Completed" <?= $order['status']=='Completed'?'selected':'' ?>>Completed</option>
-                                <option value="Cancelled" <?= $order['status']=='Cancelled'?'selected':'' ?>>Cancelled</option>
+                                <option value="pending" <?= $order['status']=='pending'?'selected':'' ?>>Pending</option>
+                                <option value="processing" <?= $order['status']=='processing'?'selected':'' ?>>Processing</option>
+                                <option value="shipped" <?= $order['status']=='shipped'?'selected':'' ?>>Shipped</option>
+                                <option value="delivered" <?= $order['status']=='delivered'?'selected':'' ?>>Delivered</option>
+                                <option value="cancelled" <?= $order['status']=='cancelled'?'selected':'' ?>>Cancelled</option>
 
                             </select>
 

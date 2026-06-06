@@ -39,18 +39,20 @@
                     <ul class="dropdown-menu dropdown-menu-end">
 
                         <li>
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="<?= base_url('profile') ?>">
                                 <i class="bi bi-person me-2"></i>
                                 Profile
                             </a>
                         </li>
 
+                        <?php if(session()->get('role') !== 'admin'): ?>
                         <li>
                             <a class="dropdown-item" href="<?= base_url('orders/my') ?>">
                                 <i class="bi bi-bag me-2"></i>
                                 My Orders
                             </a>
                         </li>
+                        <?php endif; ?>
 
                         <?php if(session()->get('role') === 'admin'): ?>
 
@@ -93,7 +95,8 @@
                 </a>
 
             <?php endif; ?>
-
+            
+            <?php if(session()->get('role') !== 'admin'): ?>
             <a href="<?= base_url('cart') ?>" class="btn btn-outline-dark position-relative">
 
                 <i class="bi bi-cart3"></i>
@@ -109,6 +112,7 @@
                 <?php endif; ?>
 
             </a>
+            <?php endif; ?>
 
         </div>
 
