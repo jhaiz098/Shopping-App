@@ -1,0 +1,112 @@
+<?= $this->extend('layouts/main_layout') ?>
+
+<?= $this->section('title') ?>
+My Orders
+<?= $this->endSection() ?>
+
+<?= $this->section('content') ?>
+
+<div class="container py-5">
+
+    <h2 class="mb-4">
+        <i class="bi bi-bag me-2"></i>
+        My Orders
+    </h2>
+
+    <?php if(empty($orders)): ?>
+
+        <div class="alert alert-info">
+            You have no orders yet.
+        </div>
+
+    <?php else: ?>
+
+        <div class="card shadow-sm">
+
+            <div class="card-body p-0">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Order ID</th>
+                            <th>Date</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <?php foreach($orders as $order): ?>
+
+                            <tr>
+
+                                <td><?= $order['id'] ?></td>
+
+                                <td>
+                                    <strong>#<?= $order['id'] ?></strong>
+                                </td>
+
+                                <td>
+                                    <?= date('M d, Y', strtotime($order['created_at'] ?? $order['order_date'])) ?>
+                                </td>
+
+                                <td>
+                                    ₱<?= number_format($order['total_amount'], 2) ?>
+                                </td>
+
+                                <td>
+
+                                    <?php
+                                    $badge = match($order['status']) {
+                                        'Pending' => 'warning',
+                                        'Processing' => 'info',
+                                        'Completed' => 'success',
+                                        'Cancelled' => 'danger',
+                                        default => 'secondary'
+                                    };
+                                    ?>
+
+                                    <span class="badge bg-<?= $badge ?>">
+                                        <?= $order['status'] ?>
+                                    </span>
+
+                                </td>
+
+                                <td>
+                                    <a href="<?= base_url('orders/view/' . $order['id']) ?>"
+                                    class="btn btn-primary btn-sm"
+                                    data-bs-toggle="tooltip"
+                                    title="View Items">
+
+                                        <i class="bi bi-eye"></i>
+
+                                    </a>
+                                </td>
+
+                            </tr>
+
+                        <?php endforeach; ?>
+
+                    </tbody>
+
+                </table>
+
+                <div class="d-flex justify-content-center mt-3">
+
+                    <?= $pager->links('default', 'bootstrap_full') ?>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    <?php endif; ?>
+
+</div>
+
+<?= $this->endSection() ?>

@@ -9,7 +9,14 @@ $routes->get('/', 'Home::index');
 $routes->get('search', 'Home::search');
 
 $routes->get('cart', 'Home::cart');
-$routes->get('cart/add/(:num)', 'Cart::add_to_cart/$1');
+$routes->post('cart/add/(:num)', 'Cart::add_to_cart/$1');
+$routes->post('cart/update/(:num)', 'Cart::update_cart/$1');
+$routes->get('cart/delete/(:num)', 'Cart::delete_cart/$1');
+$routes->get('cart/checkout', 'Cart::checkout');
+$routes->post('cart/checkout/confirm', 'Cart::confirm_checkout');
+
+$routes->get('orders/my', 'Orders::my_orders');
+$routes->get('orders/view/(:num)', 'Orders::view_order/$1');
 
 $routes->get('register', 'Auth::register');
 $routes->post('register/auth', 'Auth::registerAuth');

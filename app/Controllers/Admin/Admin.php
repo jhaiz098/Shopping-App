@@ -7,6 +7,7 @@ use App\Models\CategoryModel;
 use App\Models\ProductModel;
 use App\Models\OrderModel;
 use App\Models\UserModel;
+use App\Models\OrderItemModel;
 
 class Admin extends BaseController
 {
@@ -64,13 +65,24 @@ class Admin extends BaseController
     public function orders()
     {
         $orderModel = new OrderModel();
+        $orderItemModel = new OrderItemModel();
 
-        $data['orders'] = $orderModel
+        $orders = $orderModel
             ->select('orders.*, users.first_name, users.last_name, users.email')
             ->join('users', 'users.id = orders.user_id')
             ->orderBy('orders.order_date', 'DESC')
             ->paginate(10);
 
+        foreach ($orders as &$order) {
+
+            $order['items'] = $orderItemModel
+                ->select('order_items.*, products.name, products.image, products.price')
+                ->join('products', 'products.id = order_items.product_id')
+                ->where('order_items.order_id', $order['id'])
+                ->findAll();
+        }
+
+        $data['orders'] = $orders;
         $data['pager'] = $orderModel->pager;
 
         return view('admin/orders', $data);

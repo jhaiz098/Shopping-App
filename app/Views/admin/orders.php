@@ -142,133 +142,236 @@ Orders
 
                     </tr>
 
-                    <!-- VIEW ORDER MODAL -->
-                    <div class="modal fade"
-                         id="viewOrderModal<?= $order['id'] ?>"
-                         tabindex="-1">
-
-                        <div class="modal-dialog modal-lg">
-
-                            <div class="modal-content">
-
-                                <div class="modal-header">
-
-                                    <h5 class="modal-title">
-                                        Order #<?= $order['id'] ?>
-                                    </h5>
-
-                                    <button type="button"
-                                            class="btn-close"
-                                            data-bs-dismiss="modal">
-                                    </button>
-
-                                </div>
-
-                                <div class="modal-body">
-
-                                    <p>
-                                        <strong>Customer:</strong>
-                                        <?= esc($order['first_name']) ?>
-                                        <?= esc($order['last_name']) ?>
-                                    </p>
-
-                                    <p>
-                                        <strong>Date:</strong>
-                                        <?= date('M d, Y', strtotime($order['order_date'])) ?>
-                                    </p>
-
-                                    <p>
-                                        <strong>Total:</strong>
-                                        ₱<?= number_format($order['total_amount'], 2) ?>
-                                    </p>
-
-                                    <p>
-                                        <strong>Status:</strong>
-                                        <?= $order['status'] ?>
-                                    </p>
-
-                                    <hr>
-
-                                    <p class="text-muted">
-                                        Order items will be loaded here (join order_items table).
-                                    </p>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <!-- STATUS MODAL -->
-                    <div class="modal fade"
-                         id="statusOrderModal<?= $order['id'] ?>"
-                         tabindex="-1">
-
-                        <div class="modal-dialog">
-
-                            <form method="post"
-                                  action="<?= base_url('admin/orders/update/' . $order['id']) ?>">
-
-                                <div class="modal-content">
-
-                                    <div class="modal-header">
-
-                                        <h5 class="modal-title">
-                                            Update Status
-                                        </h5>
-
-                                        <button type="button"
-                                                class="btn-close"
-                                                data-bs-dismiss="modal">
-                                        </button>
-
-                                    </div>
-
-                                    <div class="modal-body">
-
-                                        <label class="form-label">Status</label>
-
-                                        <select name="status" class="form-select">
-
-                                            <option value="Pending" <?= $order['status']=='Pending'?'selected':'' ?>>Pending</option>
-                                            <option value="Processing" <?= $order['status']=='Processing'?'selected':'' ?>>Processing</option>
-                                            <option value="Completed" <?= $order['status']=='Completed'?'selected':'' ?>>Completed</option>
-                                            <option value="Cancelled" <?= $order['status']=='Cancelled'?'selected':'' ?>>Cancelled</option>
-
-                                        </select>
-
-                                    </div>
-
-                                    <div class="modal-footer">
-
-                                        <button type="button"
-                                                class="btn btn-secondary"
-                                                data-bs-dismiss="modal">
-                                            Cancel
-                                        </button>
-
-                                        <button type="submit"
-                                                class="btn btn-primary">
-                                            Update
-                                        </button>
-
-                                    </div>
-
-                                </div>
-
-                            </form>
-
-                        </div>
-
-                    </div>
-
                 <?php endforeach; ?>
 
             </tbody>
 
         </table>
+
+        <?php foreach($orders as $order): ?>
+        <!-- VIEW ORDER MODAL -->
+        <div class="modal fade"
+                id="viewOrderModal<?= $order['id'] ?>"
+                tabindex="-1">
+
+            <div class="modal-dialog modal-lg">
+
+                <div class="modal-content">
+
+                    <div class="modal-header">
+
+                        <h5 class="modal-title">
+                            Order #<?= $order['id'] ?>
+                        </h5>
+
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal">
+                        </button>
+
+                    </div>
+
+                    <div class="modal-body">
+
+                        <!-- ORDER INFO -->
+                        <div class="mb-3">
+
+                            <p class="mb-1">
+                                <strong>Customer:</strong>
+                                <?= esc($order['first_name']) ?>
+                                <?= esc($order['last_name']) ?>
+                            </p>
+
+                            <p class="mb-1">
+                                <strong>Date:</strong>
+                                <?= date('M d, Y', strtotime($order['order_date'])) ?>
+                            </p>
+
+                            <p class="mb-1">
+                                <strong>Total:</strong>
+                                ₱<?= number_format($order['total_amount'], 2) ?>
+                            </p>
+
+                            <p class="mb-0">
+                                <strong>Status:</strong>
+
+                                <?php
+                                $badge = match($order['status']) {
+                                    'Pending' => 'warning',
+                                    'Processing' => 'info',
+                                    'Completed' => 'success',
+                                    'Cancelled' => 'danger',
+                                    default => 'secondary'
+                                };
+                                ?>
+
+                                <span class="badge bg-<?= $badge ?>">
+                                    <?= $order['status'] ?>
+                                </span>
+
+                            </p>
+
+                        </div>
+
+                        <hr>
+
+                        <!-- ORDER ITEMS -->
+                        <h6 class="mb-3">
+                            <i class="bi bi-box-seam me-1"></i>
+                            Order Items
+                        </h6>
+
+                        <?php if(empty($order['items'])): ?>
+
+                            <div class="alert alert-warning py-2 mb-0">
+                                No items found for this order.
+                            </div>
+
+                        <?php else: ?>
+
+                            <div class="table-responsive">
+
+                                <table class="table table-sm align-middle">
+
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Product</th>
+                                            <th width="100">Price</th>
+                                            <th width="60">Qty</th>
+                                            <th width="120">Subtotal</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+
+                                        <?php $grand = 0; ?>
+
+                                        <?php foreach($order['items'] as $item): ?>
+
+                                            <?php $subtotal = $item['price'] * $item['quantity']; ?>
+                                            <?php $grand += $subtotal; ?>
+
+                                            <tr>
+
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+
+                                                        <?php if(!empty($item['image'])): ?>
+
+                                                            <img src="<?= base_url('uploads/products/' . $item['image']) ?>"
+                                                                class="rounded border me-2"
+                                                                style="width:45px;height:45px;object-fit:cover;">
+
+                                                        <?php else: ?>
+
+                                                            <div class="border rounded d-flex align-items-center justify-content-center me-2"
+                                                                style="width:45px;height:45px;">
+                                                                <i class="bi bi-image"></i>
+                                                            </div>
+
+                                                        <?php endif; ?>
+
+                                                        <span class="small fw-semibold">
+                                                            <?= esc($item['name']) ?>
+                                                        </span>
+
+                                                    </div>
+                                                </td>
+
+                                                <td>₱<?= number_format($item['price'], 2) ?></td>
+                                                <td><?= $item['quantity'] ?></td>
+                                                <td>₱<?= number_format($subtotal, 2) ?></td>
+
+                                            </tr>
+
+                                        <?php endforeach; ?>
+
+                                    </tbody>
+
+                                    <tfoot>
+                                        <tr class="table-light">
+                                            <th colspan="3" class="text-end">Total</th>
+                                            <th>₱<?= number_format($grand, 2) ?></th>
+                                        </tr>
+                                    </tfoot>
+
+                                </table>
+
+                            </div>
+
+                        <?php endif; ?>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- STATUS MODAL -->
+        <div class="modal fade"
+                id="statusOrderModal<?= $order['id'] ?>"
+                tabindex="-1">
+
+            <div class="modal-dialog">
+
+                <form method="post"
+                        action="<?= base_url('admin/orders/update/' . $order['id']) ?>">
+
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+
+                            <h5 class="modal-title">
+                                Update Status
+                            </h5>
+
+                            <button type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="modal">
+                            </button>
+
+                        </div>
+
+                        <div class="modal-body">
+
+                            <label class="form-label">Status</label>
+
+                            <select name="status" class="form-select">
+
+                                <option value="Pending" <?= $order['status']=='Pending'?'selected':'' ?>>Pending</option>
+                                <option value="Processing" <?= $order['status']=='Processing'?'selected':'' ?>>Processing</option>
+                                <option value="Completed" <?= $order['status']=='Completed'?'selected':'' ?>>Completed</option>
+                                <option value="Cancelled" <?= $order['status']=='Cancelled'?'selected':'' ?>>Cancelled</option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="modal-footer">
+
+                            <button type="button"
+                                    class="btn btn-secondary"
+                                    data-bs-dismiss="modal">
+                                Cancel
+                            </button>
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+                                Update
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+        <?php endforeach; ?>
 
     </div>
 

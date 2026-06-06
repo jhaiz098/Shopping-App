@@ -46,7 +46,7 @@
                         </li>
 
                         <li>
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="<?= base_url('orders/my') ?>">
                                 <i class="bi bi-bag me-2"></i>
                                 My Orders
                             </a>
