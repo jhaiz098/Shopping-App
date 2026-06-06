@@ -24,4 +24,7 @@ $routes->group('admin', ['filter' => 'admin'], function($routes)
     $routes->post('categories/add', 'Admin\Categories::add_category');
     $routes->post('categories/update/(:num)', 'Admin\Categories::update_category/$1');
     $routes->get('categories/delete/(:num)', 'Admin\Categories::delete_category/$1');
+    
+    $routes->get('products', 'Admin\Admin::products');
+    $routes->post('products/add', 'Admin\Products::add_product');
 });

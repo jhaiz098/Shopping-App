@@ -1,13 +1,14 @@
-<footer class="bg-light border-top py-3">
+<footer class="app-footer">
 
-    <div class="container-fluid text-center">
+    <strong>
 
-        <small class="text-muted">
+        StudentHub &copy; <?= date('Y') ?>
 
-            © <?= date('Y') ?>
-            StudentHub Admin Panel
+    </strong>
 
-        </small>
+    <div class="float-end d-none d-sm-inline">
+
+        Admin Panel
 
     </div>
 

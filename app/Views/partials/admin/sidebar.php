@@ -1,78 +1,98 @@
-<div class="bg-dark text-white"
-     style="width: 250px; min-height: calc(100vh - 56px);">
+<aside class="app-sidebar bg-dark shadow"
+       data-bs-theme="dark">
 
-    <div class="p-3">
+    <div class="sidebar-brand">
 
-        <h6 class="text-uppercase text-secondary">
-            Navigation
-        </h6>
+        <a href="<?= base_url('admin') ?>"
+           class="brand-link">
 
-        <hr>
+            <i class="bi bi-mortarboard-fill fs-4 me-2"></i>
 
-        <ul class="nav flex-column">
+            <span class="brand-text fw-light">
+                StudentHub
+            </span>
 
-            <li class="nav-item mb-2">
-
-                <a href="<?= base_url('admin') ?>"
-                   class="nav-link text-white">
-
-                    <i class="bi bi-speedometer2 me-2"></i>
-                    Dashboard
-
-                </a>
-
-            </li>
-
-            <li class="nav-item mb-2">
-
-                <a href="<?= base_url('admin/categories') ?>"
-                   class="nav-link text-white">
-
-                    <i class="bi bi-folder me-2"></i>
-                    Categories
-
-                </a>
-
-            </li>
-
-            <li class="nav-item mb-2">
-
-                <a href="<?= base_url('admin/products') ?>"
-                   class="nav-link text-white">
-
-                    <i class="bi bi-box-seam me-2"></i>
-                    Products
-
-                </a>
-
-            </li>
-
-            <li class="nav-item mb-2">
-
-                <a href="<?= base_url('admin/orders') ?>"
-                   class="nav-link text-white">
-
-                    <i class="bi bi-cart-check me-2"></i>
-                    Orders
-
-                </a>
-
-            </li>
-
-            <li class="nav-item mb-2">
-
-                <a href="<?= base_url('admin/users') ?>"
-                   class="nav-link text-white">
-
-                    <i class="bi bi-people me-2"></i>
-                    Customers
-
-                </a>
-
-            </li>
-
-        </ul>
+        </a>
 
     </div>
 
-</div>
+    <div class="sidebar-wrapper">
+
+        <nav class="mt-2">
+
+            <ul class="nav sidebar-menu flex-column"
+                data-lte-toggle="treeview"
+                role="menu">
+
+                <li class="nav-item">
+
+                    <a href="<?= base_url('admin') ?>"
+                       class="nav-link">
+
+                        <i class="nav-icon bi bi-speedometer2"></i>
+
+                        <p>Dashboard</p>
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a href="<?= base_url('admin/categories') ?>"
+                       class="nav-link">
+
+                        <i class="nav-icon bi bi-tags"></i>
+
+                        <p>Categories</p>
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a href="<?= base_url('admin/products') ?>"
+                       class="nav-link">
+
+                        <i class="nav-icon bi bi-box-seam"></i>
+
+                        <p>Products</p>
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a href="<?= base_url('admin/orders') ?>"
+                       class="nav-link">
+
+                        <i class="nav-icon bi bi-bag"></i>
+
+                        <p>Orders</p>
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a href="<?= base_url('admin/users') ?>"
+                       class="nav-link">
+
+                        <i class="nav-icon bi bi-people"></i>
+
+                        <p>Users</p>
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </nav>
+
+    </div>
+
+</aside>

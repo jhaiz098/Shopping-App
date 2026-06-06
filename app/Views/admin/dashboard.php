@@ -6,132 +6,23 @@ Dashboard
 
 <?= $this->section('content') ?>
 
-<div class="container-fluid">
+<div class="row">
 
-    <h2 class="fw-bold mb-4">
+    <div class="col-lg-3 col-6">
 
-        <i class="bi bi-speedometer2 me-2"></i>
-        Dashboard
+        <div class="small-box text-bg-primary">
 
-    </h2>
+            <div class="inner">
 
-    <div class="row">
+                <h3>12</h3>
 
-        <div class="col-md-3 mb-4">
-
-            <div class="card border-0 shadow-sm">
-
-                <div class="card-body">
-
-                    <div class="d-flex justify-content-between">
-
-                        <div>
-
-                            <h6 class="text-muted">
-                                Products
-                            </h6>
-
-                            <h3 class="fw-bold">
-                                0
-                            </h3>
-
-                        </div>
-
-                        <i class="bi bi-box-seam fs-1 text-primary"></i>
-
-                    </div>
-
-                </div>
+                <p>Categories</p>
 
             </div>
 
-        </div>
+            <div class="small-box-icon">
 
-        <div class="col-md-3 mb-4">
-
-            <div class="card border-0 shadow-sm">
-
-                <div class="card-body">
-
-                    <div class="d-flex justify-content-between">
-
-                        <div>
-
-                            <h6 class="text-muted">
-                                Categories
-                            </h6>
-
-                            <h3 class="fw-bold">
-                                0
-                            </h3>
-
-                        </div>
-
-                        <i class="bi bi-folder fs-1 text-success"></i>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="col-md-3 mb-4">
-
-            <div class="card border-0 shadow-sm">
-
-                <div class="card-body">
-
-                    <div class="d-flex justify-content-between">
-
-                        <div>
-
-                            <h6 class="text-muted">
-                                Orders
-                            </h6>
-
-                            <h3 class="fw-bold">
-                                0
-                            </h3>
-
-                        </div>
-
-                        <i class="bi bi-cart-check fs-1 text-warning"></i>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="col-md-3 mb-4">
-
-            <div class="card border-0 shadow-sm">
-
-                <div class="card-body">
-
-                    <div class="d-flex justify-content-between">
-
-                        <div>
-
-                            <h6 class="text-muted">
-                                Customers
-                            </h6>
-
-                            <h3 class="fw-bold">
-                                0
-                            </h3>
-
-                        </div>
-
-                        <i class="bi bi-people fs-1 text-danger"></i>
-
-                    </div>
-
-                </div>
+                <i class="bi bi-tags"></i>
 
             </div>
 
@@ -139,19 +30,67 @@ Dashboard
 
     </div>
 
-    <div class="card border-0 shadow-sm">
+    <div class="col-lg-3 col-6">
 
-        <div class="card-body">
+        <div class="small-box text-bg-success">
 
-            <h5 class="mb-3">
-                Welcome to StudentHub Admin Panel
-            </h5>
+            <div class="inner">
 
-            <p class="text-muted mb-0">
+                <h3>45</h3>
 
-                Manage products, categories, orders, and customers from this dashboard.
+                <p>Products</p>
 
-            </p>
+            </div>
+
+            <div class="small-box-icon">
+
+                <i class="bi bi-box-seam"></i>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-3 col-6">
+
+        <div class="small-box text-bg-warning">
+
+            <div class="inner">
+
+                <h3>18</h3>
+
+                <p>Orders</p>
+
+            </div>
+
+            <div class="small-box-icon">
+
+                <i class="bi bi-bag"></i>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-3 col-6">
+
+        <div class="small-box text-bg-danger">
+
+            <div class="inner">
+
+                <h3>25</h3>
+
+                <p>Users</p>
+
+            </div>
+
+            <div class="small-box-icon">
+
+                <i class="bi bi-people"></i>
+
+            </div>
 
         </div>
 

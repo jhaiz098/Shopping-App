@@ -1,40 +1,68 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+<nav class="app-header navbar navbar-expand bg-body">
 
     <div class="container-fluid">
 
-        <span class="navbar-brand fw-bold d-flex align-items-center gap-2">
+        <ul class="navbar-nav">
 
-            <i class="bi bi-mortarboard-fill"></i>
+            <li class="nav-item">
 
-            <a href="<?= base_url('/') ?>"
-            class="text-white text-decoration-none">
+                <a class="nav-link"
+                   data-lte-toggle="sidebar"
+                   href="#">
 
-                StudentHub Admin
+                    <i class="bi bi-list"></i>
 
-            </a>
+                </a>
 
-        </span>
+            </li>
 
-        <div class="ms-auto d-flex align-items-center gap-3">
+        </ul>
 
-            <span class="text-white">
+        <ul class="navbar-nav ms-auto">
 
-                <i class="bi bi-person-circle me-1"></i>
+            <li class="nav-item dropdown">
 
-                <?= session()->get('first_name') ?>
-                <?= session()->get('last_name') ?>
+                <a class="nav-link dropdown-toggle"
+                   data-bs-toggle="dropdown"
+                   href="#">
 
-            </span>
+                    <i class="bi bi-person-circle me-1"></i>
 
-            <a href="<?= base_url('logout') ?>"
-               class="btn btn-light btn-sm">
+                    <?= session()->get('first_name') ?>
 
-                <i class="bi bi-box-arrow-right"></i>
-                Logout
+                </a>
 
-            </a>
+                <ul class="dropdown-menu dropdown-menu-end">
 
-        </div>
+                    <li>
+                        <a class="dropdown-item"
+                           href="<?= base_url('/') ?>">
+
+                            <i class="bi bi-house me-2"></i>
+                            Homepage
+
+                        </a>
+                    </li>
+
+                    <li><hr class="dropdown-divider"></li>
+
+                    <li>
+
+                        <a class="dropdown-item text-danger"
+                           href="<?= base_url('logout') ?>">
+
+                            <i class="bi bi-box-arrow-right me-2"></i>
+                            Logout
+
+                        </a>
+
+                    </li>
+
+                </ul>
+
+            </li>
+
+        </ul>
 
     </div>
 
