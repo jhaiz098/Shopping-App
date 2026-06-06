@@ -27,4 +27,13 @@ $routes->group('admin', ['filter' => 'admin'], function($routes)
     
     $routes->get('products', 'Admin\Admin::products');
     $routes->post('products/add', 'Admin\Products::add_product');
-});
+    $routes->post('products/update/(:num)', 'Admin\Products::update_product/$1');
+    $routes->get('products/delete/(:num)', 'Admin\Products::delete_product/$1');
+
+    $routes->get('orders', 'Admin\Admin::orders');
+
+    $routes->get('users', 'Admin\Admin::users');
+    $routes->post('users/add', 'Admin\Users::add_user');
+    $routes->post('users/update/(:num)', 'Admin\Users::update_user/$1');
+    $routes->get('users/delete/(:num)', 'Admin\Users::delete_user/$1');
+    });

@@ -156,14 +156,25 @@ Products
 
                                 <img
                                     src="<?= base_url('uploads/products/' . $product['image']) ?>"
-                                    class="img-thumbnail"
-                                    style="width:70px;height:70px;object-fit:cover;">
+                                    class="rounded shadow-sm border"
+                                    style="
+                                        width:70px;
+                                        height:70px;
+                                        object-fit:cover;
+                                    ">
 
                             <?php else: ?>
 
-                                <img
-                                    src="https://via.placeholder.com/70"
-                                    class="img-thumbnail">
+                                <div
+                                    class="d-flex align-items-center justify-content-center bg-light border rounded shadow-sm"
+                                    style="
+                                        width:70px;
+                                        height:70px;
+                                    ">
+
+                                    <i class="bi bi-image text-secondary fs-3"></i>
+
+                                </div>
 
                             <?php endif; ?>
 
@@ -254,7 +265,279 @@ Products
                         </td>
 
                     </tr>
+                
+                <!-- EDIT PRODUCT MODAL -->
+                <div class="modal fade"
+                    id="editProductModal<?= $product['id'] ?>"
+                    tabindex="-1">
 
+                    <div class="modal-dialog modal-lg">
+
+                        <form method="post"
+                            enctype="multipart/form-data"
+                            action="<?= base_url('admin/products/update/' . $product['id']) ?>">
+
+                            <div class="modal-content">
+
+                                <div class="modal-header">
+
+                                    <h5 class="modal-title">
+
+                                        <i class="bi bi-pencil-square me-2"></i>
+                                        Edit Product
+
+                                    </h5>
+
+                                    <button type="button"
+                                            class="btn-close"
+                                            data-bs-dismiss="modal">
+                                    </button>
+
+                                </div>
+
+                                <div class="modal-body">
+
+                                    <div class="row">
+
+                                        <div class="col-md-6 mb-3">
+
+                                            <label class="form-label">
+                                                Product Name
+                                            </label>
+
+                                            <input type="text"
+                                                name="name"
+                                                class="form-control"
+                                                value="<?= esc($product['name']) ?>"
+                                                required>
+
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+
+                                            <label class="form-label">
+                                                Category
+                                            </label>
+
+                                            <select name="category_id"
+                                                    class="form-select"
+                                                    required>
+
+                                                <?php foreach($categories as $category): ?>
+
+                                                    <option
+                                                        value="<?= $category['id'] ?>"
+                                                        <?= $category['id'] == $product['category_id'] ? 'selected' : '' ?>>
+
+                                                        <?= esc($category['name']) ?>
+
+                                                    </option>
+
+                                                <?php endforeach; ?>
+
+                                            </select>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="mb-3">
+
+                                        <label class="form-label">
+                                            Description
+                                        </label>
+
+                                        <textarea name="description"
+                                                rows="4"
+                                                class="form-control"><?= esc($product['description']) ?></textarea>
+
+                                    </div>
+
+                                    <div class="row">
+
+                                        <div class="col-md-6 mb-3">
+
+                                            <label class="form-label">
+                                                Price
+                                            </label>
+
+                                            <div class="input-group">
+
+                                                <span class="input-group-text">
+                                                    ₱
+                                                </span>
+
+                                                <input type="number"
+                                                    step="0.01"
+                                                    min="0"
+                                                    name="price"
+                                                    value="<?= $product['price'] ?>"
+                                                    class="form-control"
+                                                    required>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+
+                                            <label class="form-label">
+                                                Stock
+                                            </label>
+
+                                            <input type="number"
+                                                min="0"
+                                                name="stock"
+                                                value="<?= $product['stock'] ?>"
+                                                class="form-control"
+                                                required>
+
+                                        </div>
+
+                                    </div>
+
+                                    <?php if(!empty($product['image'])): ?>
+
+                                        <div class="mb-3">
+
+                                            <label class="form-label">
+                                                Current Image
+                                            </label>
+
+                                            <div>
+
+                                                <img
+                                                    src="<?= base_url('uploads/products/' . $product['image']) ?>"
+                                                    width="120"
+                                                    class="img-thumbnail">
+
+                                            </div>
+
+                                        </div>
+
+                                    <?php endif; ?>
+
+                                    <div class="mb-3">
+
+                                        <label class="form-label">
+                                            Replace Image
+                                        </label>
+
+                                        <input type="file"
+                                            name="image"
+                                            class="form-control"
+                                            accept="image/*">
+
+                                        <small class="text-muted">
+                                            Leave blank to keep existing image.
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="modal-footer">
+
+                                    <button type="button"
+                                            class="btn btn-secondary"
+                                            data-bs-dismiss="modal">
+
+                                        Cancel
+
+                                    </button>
+
+                                    <button type="submit"
+                                            class="btn btn-warning">
+
+                                        <i class="bi bi-check-circle me-1"></i>
+                                        Update Product
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+                <!-- DELETE PRODUCT MODAL -->
+                <div class="modal fade"
+                    id="deleteProductModal<?= $product['id'] ?>"
+                    tabindex="-1">
+
+                    <div class="modal-dialog modal-dialog-centered">
+
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+
+                                <h5 class="modal-title text-danger">
+
+                                    <i class="bi bi-trash me-2"></i>
+                                    Delete Product
+
+                                </h5>
+
+                                <button type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal">
+                                </button>
+
+                            </div>
+
+                            <div class="modal-body">
+
+                                <p class="mb-2">
+
+                                    Are you sure you want to delete:
+
+                                </p>
+
+                                <strong>
+
+                                    <?= esc($product['name']) ?>
+
+                                </strong>
+
+                                <hr>
+
+                                <small class="text-muted">
+
+                                    This action cannot be undone.
+
+                                </small>
+
+                            </div>
+
+                            <div class="modal-footer">
+
+                                <button class="btn btn-secondary"
+                                        data-bs-dismiss="modal">
+
+                                    Cancel
+
+                                </button>
+
+                                <a href="<?= base_url('admin/products/delete/' . $product['id']) ?>"
+                                class="btn btn-danger">
+
+                                    <i class="bi bi-trash me-1"></i>
+                                    Delete
+
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                
                 <?php endforeach; ?>
 
             </tbody>
@@ -374,11 +657,20 @@ Products
 
                             </label>
 
-                            <input type="number"
-                                   step="0.01"
-                                   name="price"
-                                   class="form-control"
-                                   required>
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    ₱
+                                </span>
+
+                                <input type="number"
+                                    step="0.01"
+                                    min="0"
+                                    name="price"
+                                    class="form-control"
+                                    required>
+
+                            </div>
 
                         </div>
 

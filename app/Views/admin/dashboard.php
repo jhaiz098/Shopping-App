@@ -14,7 +14,7 @@ Dashboard
 
             <div class="inner">
 
-                <h3>12</h3>
+                <h3><?= $categoriesCount ?></h3>
 
                 <p>Categories</p>
 
@@ -36,7 +36,7 @@ Dashboard
 
             <div class="inner">
 
-                <h3>45</h3>
+                <h3><?= $productsCount ?></h3>
 
                 <p>Products</p>
 
@@ -58,7 +58,7 @@ Dashboard
 
             <div class="inner">
 
-                <h3>18</h3>
+                <h3><?= $ordersCount ?></h3>
 
                 <p>Orders</p>
 
@@ -80,7 +80,7 @@ Dashboard
 
             <div class="inner">
 
-                <h3>25</h3>
+                <h3><?= $usersCount ?></h3>
 
                 <p>Users</p>
 
