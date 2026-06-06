@@ -4,15 +4,16 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class CategoryModel extends Model
+class CartModel extends Model
 {
-    protected $table = 'categories';
+    protected $table = 'carts';
     protected $primaryKey = 'id';
     protected $returnType = 'array';
 
     protected $allowedFields = [
-        'name',
-        'description',
+        'user_id',
+        'product_id',
+        'quantity',
     ];
 
     protected $useTimestamps = true;

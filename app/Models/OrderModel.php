@@ -17,7 +17,7 @@ class OrderModel extends Model
         'status',
     ];
 
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
 }

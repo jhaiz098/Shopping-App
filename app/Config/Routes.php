@@ -6,13 +6,18 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 $routes->get('/', 'Home::index');
-$routes->get('/register', 'Auth::register');
-$routes->post('/register/auth', 'Auth::registerAuth');
+$routes->get('search', 'Home::search');
 
-$routes->get('/login', 'Auth::login');
-$routes->post('/login/auth', 'Auth::loginAuth');
+$routes->get('cart', 'Home::cart');
+$routes->get('cart/add/(:num)', 'Cart::add_to_cart/$1');
 
-$routes->get('/logout', 'Auth::logout');
+$routes->get('register', 'Auth::register');
+$routes->post('register/auth', 'Auth::registerAuth');
+
+$routes->get('login', 'Auth::login');
+$routes->post('login/auth', 'Auth::loginAuth');
+
+$routes->get('logout', 'Auth::logout');
 
 
 
