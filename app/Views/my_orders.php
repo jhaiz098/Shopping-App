@@ -67,18 +67,42 @@ My Orders
                                 <td>
 
                                     <?php
-                                    $badge = match($order['status']) {
-                                        'Pending' => 'warning',
-                                        'Processing' => 'info',
-                                        'Completed' => 'success',
-                                        'Cancelled' => 'danger',
-                                        default => 'secondary'
+                                    $status = strtolower($order['status']);
+
+                                    $statusConfig = match($status) {
+                                        'pending' => [
+                                            'class' => 'bg-warning text-dark',
+                                            'icon'  => 'bi-hourglass-split'
+                                        ],
+                                        'processing' => [
+                                            'class' => 'bg-info text-dark',
+                                            'icon'  => 'bi-gear'
+                                        ],
+                                        'shipped' => [
+                                            'class' => 'bg-primary',
+                                            'icon'  => 'bi-truck'
+                                        ],
+                                        'delivered' => [
+                                            'class' => 'bg-success',
+                                            'icon'  => 'bi-check-circle'
+                                        ],
+                                        'cancelled' => [
+                                            'class' => 'bg-danger',
+                                            'icon'  => 'bi-x-circle'
+                                        ],
+                                        default => [
+                                            'class' => 'bg-secondary',
+                                            'icon'  => 'bi-question-circle'
+                                        ]
                                     };
                                     ?>
 
-                                    <span class="badge bg-<?= $badge ?>">
-                                        <?= $order['status'] ?>
-                                    </span>
+                                    <p class="mb-0">
+                                        <span class="badge <?= $statusConfig['class'] ?>">
+                                            <i class="bi <?= $statusConfig['icon'] ?> me-1"></i>
+                                            <?= ucfirst($order['status']) ?>
+                                        </span>
+                                    </p>
 
                                 </td>
 

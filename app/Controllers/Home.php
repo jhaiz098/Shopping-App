@@ -49,7 +49,9 @@ class Home extends BaseController
                 'PRD-' . str_pad($product['id'], 6, '0', STR_PAD_LEFT);
         }
 
-        $data['categories'] = $categoryModel->findAll();
+        $data['categories'] = $categoryModel
+            ->limit(4)
+            ->findAll();
 
         return view('home', $data);
     }
@@ -57,9 +59,11 @@ class Home extends BaseController
     public function search()
     {
         $keyword = trim($this->request->getGet('keyword'));
+        $categoryId = $this->request->getGet('category');
 
         $productModel = new ProductModel();
         $cartModel = new CartModel();
+        $categoryModel = new CategoryModel();
 
         $userId = session()->get('user_id');
 
@@ -76,28 +80,52 @@ class Home extends BaseController
 
         $perPage = 8;
 
-        $products = $productModel
+        $builder = $productModel
             ->select('products.*, categories.name as category_name')
-            ->join('categories', 'categories.id = products.category_id', 'left')
-            ->groupStart()
-                ->like('products.name', $keyword)
-                ->orLike('products.description', $keyword)
-            ->groupEnd()
+            ->join('categories', 'categories.id = products.category_id', 'left');
+
+        // Category filter
+        if (!empty($categoryId))
+        {
+            $builder->where(
+                'products.category_id',
+                $categoryId
+            );
+        }
+
+        // Keyword filter
+        if (!empty($keyword))
+        {
+            $builder
+                ->groupStart()
+                    ->like('products.name', $keyword)
+                    ->orLike('products.description', $keyword)
+                ->groupEnd();
+        }
+
+        $products = $builder
             ->orderBy('products.id', 'DESC')
             ->paginate($perPage);
 
         foreach ($products as &$product)
         {
             $product['product_code'] =
-                'PRD-' . str_pad($product['id'], 6, '0', STR_PAD_LEFT);
+                'PRD-' . str_pad(
+                    $product['id'],
+                    6,
+                    '0',
+                    STR_PAD_LEFT
+                );
         }
 
         $data = [
-            'cartMap'   => $cartMap,
-            'cartCount' => $this->getCartCount(),
-            'keyword'   => $keyword,
-            'products'  => $products,
-            'pager'     => $productModel->pager
+            'cartMap'       => $cartMap,
+            'cartCount'     => $this->getCartCount(),
+            'keyword'       => $keyword,
+            'categoryId'    => $categoryId,
+            'products'      => $products,
+            'pager'         => $productModel->pager,
+            'categories'    => $categoryModel->findAll()
         ];
 
         return view('search_results', $data);

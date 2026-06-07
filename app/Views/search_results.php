@@ -48,9 +48,10 @@ Search
 
     <div class="row">
 
-        <?php if(empty($products)): ?>
+        <!-- SEARCH RESULTS -->
+        <div class="col-lg-9">
 
-            <div class="col-12">
+            <?php if(empty($products)): ?>
 
                 <div class="alert alert-warning">
 
@@ -58,107 +59,164 @@ Search
 
                 </div>
 
-            </div>
+            <?php endif; ?>
 
-        <?php endif; ?>
+            <div class="row">
 
-        <?php foreach($products as $product): ?>
+                <?php foreach($products as $product): ?>
 
-            <div class="col-md-3 mb-4">
+                    <div class="col-md-4 mb-4">
 
-                <div class="card h-100 shadow-sm">
+                        <div class="card h-100 shadow-sm">
 
-                    <!-- IMAGE -->
-                    <?php if(!empty($product['image'])): ?>
+                            <?php if(!empty($product['image'])): ?>
 
-                        <img
-                            src="<?= base_url('uploads/products/' . $product['image']) ?>"
-                            class="card-img-top p-2"
-                            style="height:220px; object-fit:contain;">
+                                <img
+                                    src="<?= base_url('uploads/products/' . $product['image']) ?>"
+                                    class="card-img-top p-2"
+                                    style="height:220px; object-fit:contain;">
 
-                    <?php else: ?>
+                            <?php else: ?>
 
-                        <div class="d-flex align-items-center justify-content-center bg-light"
-                            style="height:220px;">
+                                <div class="d-flex align-items-center justify-content-center bg-light"
+                                    style="height:220px;">
 
-                            <i class="bi bi-image text-secondary"
-                            style="font-size:4rem;"></i>
+                                    <i class="bi bi-image text-secondary"
+                                    style="font-size:4rem;"></i>
+
+                                </div>
+
+                            <?php endif; ?>
+
+                            <div class="card-body d-flex flex-column">
+
+                                <span class="badge bg-secondary mb-2 px-3 py-2">
+                                    <?= esc($product['category_name'] ?? 'Uncategorized') ?>
+                                </span>
+
+                                <p class="text-muted small mb-1">
+                                    <span class="fw-bold">Product Code:</span>
+                                    <?= esc($product['product_code']) ?>
+                                </p>
+
+                                <h5 class="mb-1">
+                                    <?= esc($product['name']) ?>
+                                </h5>
+
+                                <small class="mb-2">
+
+                                    <?php if($product['stock'] > 10): ?>
+
+                                        <span class="text-success fw-semibold">
+                                            In Stock: <?= $product['stock'] ?>
+                                        </span>
+
+                                    <?php elseif($product['stock'] > 0): ?>
+
+                                        <span class="text-warning fw-semibold">
+                                            Low Stock: <?= $product['stock'] ?>
+                                        </span>
+
+                                    <?php else: ?>
+
+                                        <span class="text-danger fw-semibold">
+                                            Out of Stock
+                                        </span>
+
+                                    <?php endif; ?>
+
+                                </small>
+
+                                <p class="text-muted mb-3">
+
+                                    ₱<?= number_format($product['price'], 2) ?>
+
+                                </p>
+
+                                <?php if(session()->get('role') !== 'admin'): ?>
+
+                                    <button
+                                        class="btn btn-primary w-100 mt-auto"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#cartModal<?= $product['id'] ?>"
+                                        <?= ($product['stock'] <= 0) ? 'disabled' : '' ?>>
+
+                                        <i class="bi bi-cart-plus me-1"></i>
+                                        Add to Cart
+
+                                    </button>
+
+                                <?php endif; ?>
+
+                            </div>
 
                         </div>
 
-                    <?php endif; ?>
+                    </div>
 
-                    <div class="card-body d-flex flex-column">
+                    <?= view('partials/add_to_cart_modal', [
+                        'product' => $product
+                    ]) ?>
 
-                        <!-- CATEGORY -->
-                        <span class="badge bg-secondary mb-2">
-                            <?= esc($product['category_name'] ?? 'Uncategorized') ?>
-                        </span>
+                <?php endforeach; ?>
 
-                        <!-- PRODUCT CODE -->
-                        <p class="text-muted small mb-1">
-                            <span class="fw-bold">Product Code:</span> <?= esc($product['product_code']) ?>
-                        </p>
+            </div>
 
-                        <!-- PRODUCT NAME -->
-                        <h5 class="mb-1">
-                            <span class="fw-bold">Name:</span><?= esc($product['name']) ?>
-                        </h5>
+            <div class="d-flex justify-content-center mt-3">
 
-                        <!-- STOCK -->
-                        <small class="mb-2">
+                <?= $pager->links('default', 'bootstrap_full') ?>
 
-                            <?php if($product['stock'] > 10): ?>
-                                <span class="text-success fw-semibold">
-                                    In Stock: <?= $product['stock'] ?>
-                                </span>
+            </div>
 
-                            <?php elseif($product['stock'] > 0): ?>
-                                <span class="text-warning fw-semibold">
-                                    Low Stock: <?= $product['stock'] ?>
-                                </span>
+        </div>
 
-                            <?php else: ?>
-                                <span class="text-danger fw-semibold">
-                                    Out of Stock
-                                </span>
-                            <?php endif; ?>
+        <!-- CATEGORIES SIDEBAR -->
+        <div class="col-lg-3">
 
-                        </small>
+            <div class="card shadow-sm">
 
-                        <!-- PRICE -->
-                        <p class="text-muted mb-3">
-                            ₱<?= number_format($product['price'], 2) ?>
-                        </p>
+                <div class="card-header bg-white">
 
-                        <?php if(session()->get('role') !== 'admin'): ?>
-                        <!-- BUTTON -->
-                        <button
-                            class="btn btn-primary w-100 mt-auto"
-                            data-bs-toggle="modal"
-                            data-bs-target="#cartModal<?= $product['id'] ?>"
-                            <?= ($product['stock'] <= 0) ? 'disabled' : '' ?>>
+                    <h5 class="mb-0">
 
-                            <i class="bi bi-cart-plus me-1"></i>
-                            Add to Cart
+                        <i class="bi bi-grid me-2"></i>
+                        Categories
 
-                        </button>
-                        <?php endif; ?>
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="d-flex flex-wrap gap-2">
+
+                        <a href="<?= base_url('search?keyword=' . urlencode($keyword)) ?>"
+                        class="btn <?= empty($categoryId)
+                                ? 'btn-primary'
+                                : 'btn-outline-primary' ?> btn-sm">
+
+                            All
+
+                        </a>
+
+                        <?php foreach($categories as $category): ?>
+
+                            <a href="<?= base_url('search?keyword=' . urlencode($keyword) . '&category=' . $category['id']) ?>"
+                            class="btn <?= ($categoryId == $category['id'])
+                                    ? 'btn-primary'
+                                    : 'btn-outline-primary' ?> btn-sm">
+
+                                <?= esc($category['name']) ?>
+
+                            </a>
+
+                        <?php endforeach; ?>
 
                     </div>
 
                 </div>
 
             </div>
-            
-            <?= view('partials/add_to_cart_modal', [
-                'product' => $product
-            ]) ?>
-        <?php endforeach; ?>
-
-        <div class="d-flex justify-content-center mt-3">
-
-            <?= $pager->links('default', 'bootstrap_full') ?>
 
         </div>
 

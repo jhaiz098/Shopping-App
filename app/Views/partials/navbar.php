@@ -7,7 +7,7 @@
             StudentHub
         </a>
 
-        <form action="<?= base_url('search') ?>" method="get" class="d-flex w-50">
+        <form action="<?= base_url('search') ?>" method="get" class="d-flex gap-2 w-50">
 
             <input
                 class="form-control"
@@ -15,6 +15,8 @@
                 name="keyword"
                 placeholder="Search school supplies..."
                 value="<?= esc($_GET['keyword'] ?? '') ?>">
+
+            <input type="submit" value="Search" class="btn btn-primary">
 
         </form>
 

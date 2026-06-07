@@ -102,7 +102,7 @@ Homepage
                         <div class="card-body d-flex flex-column">
 
                             <!-- CATEGORY -->
-                            <span class="badge bg-secondary mb-2">
+                            <span class="badge bg-secondary mb-2 px-3 py-2">
                                 <?= esc($product['category_name'] ?? 'Uncategorized') ?>
                             </span>
 

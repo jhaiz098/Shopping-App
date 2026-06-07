@@ -13,16 +13,45 @@ class Admin extends BaseController
 {
     public function dashboard()
     {
-        $categoryModel = new CategoryModel;
-        $productModel  = new ProductModel;
-        $orderModel    = new OrderModel;
-        $userModel     = new UserModel;
+        $categoryModel = new CategoryModel();
+        $productModel  = new ProductModel();
+        $orderModel    = new OrderModel();
+        $userModel     = new UserModel();
 
         $data = [
             'categoriesCount' => $categoryModel->countAllResults(),
             'productsCount'   => $productModel->countAllResults(),
             'ordersCount'     => $orderModel->countAllResults(),
             'usersCount'      => $userModel->countAllResults(),
+
+            // Revenue
+            'totalRevenue' => $orderModel
+                ->selectSum('total_amount')
+                ->first()['total_amount'] ?? 0,
+
+            // Pending Orders
+            'pendingOrders' => $orderModel
+                ->where('status', 'Pending')
+                ->countAllResults(),
+
+            // Low Stock (1-10)
+            'lowStockProducts' => $productModel
+                ->where('stock >', 0)
+                ->where('stock <=', 10)
+                ->countAllResults(),
+
+            // Out of Stock
+            'outOfStockProducts' => $productModel
+                ->where('stock', 0)
+                ->countAllResults(),
+
+            // Recent Orders
+            'recentOrders' => $orderModel
+                ->select('orders.*, users.first_name, users.last_name')
+                ->join('users', 'users.id = orders.user_id')
+                ->orderBy('orders.id', 'DESC')
+                ->limit(5)
+                ->findAll(),
         ];
 
         return view('admin/dashboard', $data);
